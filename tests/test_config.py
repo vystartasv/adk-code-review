@@ -17,23 +17,18 @@ class TestConfig:
 
     def test_api_key_set_after_import(self):
         """After importing config, GOOGLE_API_KEY should be in environment."""
-        # Reload to test fresh
-        import importlib
-        if "utilities.config" in sys.modules:
-            del sys.modules["utilities.config"]
-
-        was_set = "GOOGLE_API_KEY" in os.environ
-        saved = os.environ.get("GOOGLE_API_KEY")
-
-        # Remove key to test auto-inject
-        if "GOOGLE_API_KEY" in os.environ:
-            del os.environ["GOOGLE_API_KEY"]
-
-        try:
-            import utilities.config  # noqa
-            assert "GOOGLE_API_KEY" in os.environ
-            assert len(os.environ["GOOGLE_API_KEY"]) > 10
-        finally:
-            # Restore
-            if was_set and saved:
-                os.environ["GOOGLE_API_KEY"] = saved
+        import subprocess
+        result = subprocess.run(
+            ["python3.11", "-c",
+             "import os; "
+             "os.environ.pop('GOOGLE_API_KEY', None); "
+             "import sys; sys.path.insert(0, '.'); "
+             "import utilities.config; "
+             "key = os.environ.get('GOOGLE_API_KEY', ''); "
+             "assert len(key) > 10, f'Key missing or too short: {len(key)} chars'; "
+             "print('OK')"],
+            capture_output=True, text=True,
+            cwd=str(project_root),
+            timeout=10,
+        )
+        assert result.returncode == 0, f"Stderr: {result.stderr}"

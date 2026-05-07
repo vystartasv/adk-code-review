@@ -21,4 +21,20 @@ def _ensure_google_api_key():
         pass  # Credential proxy unavailable — user must set env manually
 
 
+def _ensure_google_cloud_project():
+    """If GOOGLE_CLOUD_PROJECT is not in the environment, try the credential proxy."""
+    if os.environ.get("GOOGLE_CLOUD_PROJECT"):
+        return
+
+    try:
+        sys.path.insert(0, os.path.expanduser("~/.hermes"))
+        from credential_proxy.client import get_credential
+        cred = get_credential("Google Cloud Project")
+        if cred and cred.get("password"):
+            os.environ["GOOGLE_CLOUD_PROJECT"] = cred["password"]
+    except Exception:
+        pass
+
+
 _ensure_google_api_key()
+_ensure_google_cloud_project()
