@@ -15,7 +15,7 @@ if project_root not in sys.path:
 
 import utilities.config  # noqa: E402 — auto-injects GOOGLE_API_KEY from credential proxy
 
-from agents.tools import (
+from agents.adk_code_review.tools import (
     analyze_repo,
     scan_security,
     run_quality_checks,

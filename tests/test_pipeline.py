@@ -11,7 +11,7 @@ sys.path.insert(0, str(project_root))
 
 import pytest
 
-from agents.tools import analyze_repo, get_identity
+from agents.adk_code_review.tools import analyze_repo, get_identity
 from utilities.identity import AgentIdentity
 from utilities.trust_score import TrustScoreLedger
 

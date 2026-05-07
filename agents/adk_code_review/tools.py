@@ -6,22 +6,15 @@ import json
 import os
 import re
 import subprocess
-import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-# Ensure project root is on PYTHONPATH (needed in Cloud Run where only the
-# agent directory is added by default)
-_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-if _project_root not in sys.path:
-    sys.path.insert(0, _project_root)
-
-# Import our stack components
-from utilities.identity import AgentIdentity
-from utilities.quality_gate import run_all_checks
-from utilities.trust_score import TrustScoreLedger
+# Import our stack components (within the agent package)
+from .utilities.identity import AgentIdentity
+from .utilities.quality_gate import run_all_checks
+from .utilities.trust_score import TrustScoreLedger
 
 # Global trust score ledger shared across agents
 _score_ledger = TrustScoreLedger()
