@@ -1,0 +1,18 @@
+# Trusted Code Review Pipeline — Requirements
+# Build multi-agent systems with Google ADK + A2A + Works With Agents stack
+
+google-adk>=1.18.0
+google-genai>=1.0.0
+pydantic>=2.0
+fastapi>=0.100
+uvicorn>=0.23
+
+# Ed25519 cryptographic signing (required for verification)
+pynacl>=1.5.0
+
+# Code analysis (optional but recommended)
+# bandit>=1.7  # Python security linter
+# radon>=6.0   # Code complexity metrics
+
+# Testing
+pytest>=8.0
